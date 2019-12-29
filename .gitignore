@@ -1,0 +1,6 @@
+# Sensitive Files
+credentials.json
+
+# Useless Junk
+__pycache__/
+.vscode/

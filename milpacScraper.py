@@ -35,7 +35,7 @@ class roster:
             4 (str): Promotion Date
             5 (str): Position
         '''
-        match = re.findall(r"rosterListItem\"(.|\n\t)*ranks/0/(.*)\"(.|\n\t)*uniqueid=(\d*)..\n\t*(.*)\n(.|\t\n)*(.|\n\t)*rosterEnlisted..(.*)<(.|\n\t)*rosterPromo..(.*)<.*(.|\n\t)*rosterCustom...(.*)<", self.html)
+        match = re.findall(r"rosterListItem\"(.|\n\t)*src..(.*)\"(.|\n\t)*uniqueid=(\d*)..\n\t*(.*)\n(.|\t\n)*(.|\n\t)*rosterEnlisted..(.*)<(.|\n\t)*rosterPromo..(.*)<.*(.|\n\t)*rosterCustom...(.*)<", self.html)
 
         output = []
         for m in match:

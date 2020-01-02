@@ -4,3 +4,4 @@ credentials.json
 # Useless Junk
 __pycache__/
 .vscode/
+*.html

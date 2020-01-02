@@ -1,177 +1,176 @@
-{
-    
-    "AR": {
+[
+    {
         "short": "AR",
-        "long": "Active Reserve",
+        "long": "Reservist",
         "paygrade": "",
-        "image": ""
+        "milpacImage": "https://7cav.us/styles/7thcavalry/xenforo/avatars/avatar_s.png"
     },
-    "RCT": {
+    {
         "short": "RCT",
         "long": "Recruit",
         "paygrade": "E-1",
-        "image": "/28.jpg?1450284333"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/28.jpg?1450284333"
     },
-    "PVT": {
+    {
         "short": "PVT",
         "long": "Private",
         "paygrade": "E-2",
-        "image": "/27.jpg?1450281683"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/27.jpg?1450281683"
     },
-    "PFC": {
+    {
         "short": "PFC",
         "long": "Private First Class",
         "paygrade": "E-3",
-        "image": "/26.jpg?1450281657"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/26.jpg?1450281657"
     },
-    "SPC": {
+    {
         "short": "SPC",
         "long": "Specialist",
         "paygrade": "E-4",
-        "image": "/25.jpg?1450281633"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/25.jpg?1450281633"
     },
-    "CPL": {
+    {
         "short": "CPL",
         "long": "Corporal",
         "paygrade": "E-4",
-        "image": "/24.jpg?1450281612"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/24.jpg?1450281612"
     },
-    "SGT": {
+    {
         "short": "SGT",
         "long": "Sergeant",
         "paygrade": "E-5",
-        "image": "/23.jpg?1450281598"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/23.jpg?1450281598"
     },
-    "SSG": {
+    {
         "short": "SSG",
         "long": "Staff Sergeant",
         "paygrade": "E-6",
-        "image": "/22.jpg?1450281580"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/22.jpg?1450281580"
     },
-    "SFC": {
+    {
         "short": "SFC",
         "long": "Sergeant First Class",
         "paygrade": "E-7",
-        "image": "/21.jpg?1450281555"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/21.jpg?1450281555"
     },
-    "MSG": {
+    {
         "short": "MSG",
         "long": "Master Sergeant",
         "paygrade": "E-8",
-        "image": "/20.jpg?1450281534"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/20.jpg?1450281534"
     },
-    "1SG": {
+    {
         "short": "1ST",
         "long": "First Sergeant",
         "paygrade": "E-8",
-        "image": "/19.jpg?1450281517"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/19.jpg?1450281517"
     },
-    "SGM": {
+    {
         "short": "SGM",
         "long": "Sergeant Major",
         "paygrade": "E-9",
-        "image": "/18.jpg?1450281499"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/18.jpg?1450281499"
     },
-    "CSM": {
+    {
         "short": "CSM",
         "long": "Command Sergeant Major",
         "paygrade": "E-9",
-        "image": "/17.jpg?1450281481"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/17.jpg?1450281481"
     },
-    "WO1": {
+    {
         "short": "WO1",
         "long": "Warrant Officer 1",
         "paygrade": "W-1",
-        "image": "/16.jpg?1450281439"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/16.jpg?1450281439"
     },
-    "CW2": {
+    {
         "short": "CW2",
         "long": "Chief Warrant Officer 2",
         "paygrade": "W-2",
-        "image": "/15.jpg?1450281416"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/15.jpg?1450281416"
     },
-    "CW3": {
+    {
         "short": "CW3",
         "long": "Chief Warrant Officer 3",
         "paygrade": "W-3",
-        "image": "/14.jpg?1450281398"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/14.jpg?1450281398"
     },
-    "CW4": {
+    {
         "short": "CW4",
         "long": "Chief Warrant Officer 4",
         "paygrade": "W-4",
-        "image": "/13.jpg?1450281370"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/13.jpg?1450281386"
     },
-    "CW5": {
+    {
         "short": "CW5",
         "long": "Chief Warrant Officer 5",
         "paygrade": "W-5",
-        "image": "/12.jpg?1450281370"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/12.jpg?1450281370"
     },
-    "2LT": {
+    {
         "short": "2LT",
         "long": "Second Lieutenant",
         "paygrade": "O-1",
-        "image": "/11.jpg?1450281265"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/11.jpg?1450281265"
     },
-    "1LT": {
+    {
         "short": "1LT",
         "long": "First Lieutenant",
         "paygrade": "O-2",
-        "image": "/10.jpg?1450281250"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/10.jpg?1450281250"
     },
-    "CPT": {
+    {
         "short": "CPT",
         "long": "Captain",
         "paygrade": "O-3",
-        "image": "/9.jpg?1450281234"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/9.jpg?1450281234"
     },
-    "MAJ": {
+    {
         "short": "MAJ",
         "long": "Major",
         "paygrade": "O-4",
-        "image": "/8.jpg?1450281202"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/8.jpg?1450281202"
     },
-    "LTC": {
+    {
         "short": "LTC",
         "long": "Lieutenant Colonel",
         "paygrade": "O-5",
-        "image": "/7.jpg?1450281188"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/7.jpg?1450281188"
     },
-    "COL": {
+    {
         "short": "COL",
         "long": "Colonel",
         "paygrade": "O-6",
-        "image": "/6.jpg?1450281158"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/6.jpg?1450281158"
     },
-    "BG": {
+    {
         "short": "BG",
         "long": "Brigadier General",
         "paygrade": "O-7",
-        "image": "/5.jpg?1450281107"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/5.jpg?1450281107"
     },
-    "MG": {
+    {
         "short": "MG",
         "long": "Major General",
         "paygrade": "O-8",
-        "image": "/4.jpg?1450281089"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/4.jpg?1450281089"
     },
-    "LTG": {
+    {
         "short": "LTG",
         "long": "Lieutenant General",
         "paygrade": "O-9",
-        "image": "/3.jpg?1450280949"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/3.jpg?1450280949"
     },
-    "GEN": {
+    {
         "short": "GEN",
         "long": "General",
         "paygrade": "O-10",
-        "image": "/2.jpg?1450280949"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/2.jpg?1450280949"
     },
-    "GOA": {
+    {
         "short": "GOA",
         "long": "General of the Army",
         "paygrade": "O-10",
-        "image": "/1.jpg?1450280915"
+        "milpacImage": "data/pixelexit/rosters/ranks/0/1.jpg?1450280915"
     }
-}
+]

@@ -12,6 +12,7 @@ class roster:
     '''
 
     def __init__(self, ID):
+        self.ID = ID
         self.html = requests.get(f"https://7cav.us/rosters?id={ID}").text
     
     def getIDs(self):
@@ -45,7 +46,8 @@ class roster:
                 m[4], # Rank w/ Full Name
                 m[7], # Enlisted Date
                 m[9], # Promotion Date
-                m[11] # Position
+                m[11], # Position
+                self.ID # Roster ID
                 ])
 
         return output

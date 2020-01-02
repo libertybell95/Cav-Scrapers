@@ -14,9 +14,9 @@ class roster:
     def __init__(self, ID):
         self.html = requests.get(f"https://7cav.us/rosters?id={ID}").text
     
-    def getURLs(self):
+    def getIDs(self):
         '''
-        Get URLs of all milpac IDs in a roster.
+        Get all milpac IDs in a roster.
 
         Output (list): All milpac IDs found in the roster.
         '''
@@ -49,6 +49,15 @@ class roster:
                 ])
 
         return output
+
+    def getRosters(self):
+        '''
+        Get list of all roster ID's, for further scraping.
+
+        Output (list): List of all roster ID's, as found in URL.
+        '''
+
+        return re.findall(r'rosters\/\?id=(\d+)', self.html)
 
 class trooper:
     '''

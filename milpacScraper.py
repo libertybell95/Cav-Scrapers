@@ -122,6 +122,3 @@ class trooper:
             2 (str): Award Details
         '''
         return re.findall(r'awardDate..(.*)<.*\n.*awardTitle..(.*)<.*\n.*\n.*awardDetails..(.*)<', self.html)
-
-if __name__ == "__main__":
-    print(trooper(16).awards())

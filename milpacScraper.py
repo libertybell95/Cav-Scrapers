@@ -6,7 +6,7 @@ import csv
 
 class roster:
     '''
-    Functions meant to scrape data from a milpacs roster only
+    Functions meant to scrape data from a milpacs roster only.
 
     Input:
         ID (int): Roster ID to be scraped.
@@ -47,7 +47,7 @@ class roster:
             output.append([
                 m[3], # Milpac ID
                 m[1], # Rank picture URL
-                m[4], # Rank w/ Full Name
+                m[4].replace('&#039;',''), # Rank w/ Full Name
                 m[7], # Enlisted Date
                 m[9], # Promotion Date
                 m[11], # Position
@@ -82,6 +82,7 @@ class roster:
             with open("rosters.csv", "w", newline="") as file:
                 wr = csv.writer(file)
                 wr.writerows(output)
+            print(f"Exported data for {len(output)} troopers.")
         return output
 
 
@@ -117,7 +118,7 @@ class trooper:
             secondaries = False
 
         return {
-            "name": re.findall(r'Full Name.*\n\t*.*?>(.*)<', self.html)[0],
+            "name": re.findall(r'Full Name.*\n\t*.*?>(.*)<', self.html)[0].replace('&#039;',''),
             "primary": re.findall(r'Primary Position.*\n\t*.*?>(.*)<', self.html)[0],
             "secondary": secondaries,
             "enlisted": re.findall(r'Enlisted.*\n\t*.*?>(.*)<', self.html)[0],

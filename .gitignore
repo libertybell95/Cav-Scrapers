@@ -7,3 +7,7 @@ __pycache__/
 *.html
 *.csv
 main.py
+
+# Do not ignore ghettopacks
+!ghettopacks.csv
+!ghettopacks_clean.csv

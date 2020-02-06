@@ -25,9 +25,15 @@ class roster:
 
         return re.findall(r"profile\?uniqueid=(\d*)", self.html)
             
-    def getInfo(self, rosterID=False):
+    def getInfo(self, rosterID=False, removeSpecialCharacters=False):
         '''
         Get various info from milpacs roster.
+
+        Inputs:
+            rosterID (bool) [OPTIONAL]: Get info for a specific roster. Default: False
+                If False, will use ID specified when class was initiated.
+            removeSpecialCharacters (bool) [OPTIONAL]: Remove any special characters from troopers names, specifically aprostrophies.
+                Default: False.
 
         Output (list): List of information on each trooper. Each index contains the following, in order:
             0 (int): Milpac ID
@@ -44,10 +50,15 @@ class roster:
 
         output = []
         for m in match:
+            if removeSpecialCharacters == True:
+                name = m[4].replace('&#039;','')
+            else:
+                name = m[4].replace('&#039;','\'')
+
             output.append([
                 m[3], # Milpac ID
                 m[1], # Rank picture URL
-                m[4].replace('&#039;',''), # Rank w/ Full Name
+                name, # Rank w/ Full Name
                 m[7], # Enlisted Date
                 m[9], # Promotion Date
                 m[11], # Position
@@ -97,9 +108,13 @@ class trooper:
         
         self.html = requests.get(f"https://7cav.us/rosters/profile?uniqueid={ID}").text
 
-    def information(self):
+    def information(self, removeSpecialCharacters=False):
         '''
         Get data listed in 'Information' block of the milpac roster.
+
+        Inputs:
+            removeSpecialCharacters (bool) [OPTIONAL]: Remove any special characters from troopers names, specifically aprostrophies.
+                Default: False.
 
         Output (dict): Trooper information with the following keys:
             name (str): Full name (Ex: John Doe)
@@ -111,14 +126,22 @@ class trooper:
             forumID (int): Forum account ID
 
         '''
+        # Handle secondaries, if present.
         sec = re.findall(r'"username">(.*)<', self.html)
         if bool(sec):
             secondaries = list(sec)
         else:
             secondaries = False
 
+        # Handle special characters in name
+        name = re.findall(r'Full Name.*\n\t*.*?>(.*)<', self.html)[0]
+        if removeSpecialCharacters == True:
+            name = name.replace('&#039;','')
+        else:
+            name = name.replace('&#039;','\'')
+
         return {
-            "name": re.findall(r'Full Name.*\n\t*.*?>(.*)<', self.html)[0].replace('&#039;',''),
+            "name": name,
             "primary": re.findall(r'Primary Position.*\n\t*.*?>(.*)<', self.html)[0],
             "secondary": secondaries,
             "enlisted": re.findall(r'Enlisted.*\n\t*.*?>(.*)<', self.html)[0],

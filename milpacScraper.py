@@ -2,6 +2,7 @@
 
 import re
 import requests
+import csv
 
 class roster:
     '''
@@ -11,7 +12,7 @@ class roster:
         ID (int): Roster ID to be scraped.
     '''
 
-    def __init__(self, ID):
+    def __init__(self, ID=1):
         self.ID = ID
         self.html = requests.get(f"https://7cav.us/rosters?id={ID}").text
     
@@ -24,7 +25,7 @@ class roster:
 
         return re.findall(r"profile\?uniqueid=(\d*)", self.html)
             
-    def getInfo(self):
+    def getInfo(self, rosterID=False):
         '''
         Get various info from milpacs roster.
 
@@ -36,6 +37,9 @@ class roster:
             4 (str): Promotion Date
             5 (str): Position
         '''
+        if rosterID != False: # If a rosterID is specified for this function, grab from that roster.
+            self.html = requests.get(f"https://7cav.us/rosters?id={rosterID}").text
+
         match = re.findall(r"rosterListItem\"(.|\n\t)*src..(.*)\"(.|\n\t)*uniqueid=(\d*)..\n\t*(.*)\n(.|\t\n)*(.|\n\t)*rosterEnlisted..(.*)<(.|\n\t)*rosterPromo..(.*)<.*(.|\n\t)*rosterCustom...(.*)<", self.html)
 
         output = []
@@ -60,6 +64,26 @@ class roster:
         '''
 
         return re.findall(r'rosters\/\?id=(\d+)', self.html)
+
+    def scrapeAllRosters(self, toCSV=False):
+        '''
+        Compile a list of all troopers on all rosters.
+        Inputs:
+            toCSV (bool) [OPTIONAL]: Should roster list be saved to a .csv file
+
+        Output (list): List of all troopers with each index being information found in roster().getInfo()
+        '''
+        IDs = self.getRosters()
+        output = []
+        for i in IDs:
+            output += self.getInfo(i)
+
+        if toCSV == True:
+            with open("rosters.csv", "w", newline="") as file:
+                wr = csv.writer(file)
+                wr.writerows(output)
+        return output
+
 
 class trooper:
     '''

@@ -5,5 +5,4 @@ credentials.json
 __pycache__/
 .vscode/
 *.html
-*.csv
 main.py

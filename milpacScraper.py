@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Scraper for milpacs data
 
 import re
@@ -76,7 +78,7 @@ class roster:
 
         return re.findall(r'rosters\/\?id=(\d+)', self.html)
 
-    def scrapeAllRosters(self, toCSV=False):
+    def scrapeAllRosters(self, toCSV=False, removeSpecialCharacters=False):
         '''
         Compile a list of all troopers on all rosters.
         Inputs:
@@ -87,7 +89,7 @@ class roster:
         IDs = self.getRosters()
         output = []
         for i in IDs:
-            output += self.getInfo(i)
+            output += self.getInfo(i, removeSpecialCharacters=removeSpecialCharacters)
 
         if toCSV == True:
             with open("rosters.csv", "w", newline="") as file:

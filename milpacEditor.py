@@ -74,7 +74,7 @@ class add:
             "record_date":  (None, date),
             "citation":     (None),
             "roster_id":    (None, 1),
-            "relation_id":  (None, 2519),
+            "relation_id":  (None, milpacID),
             "record_id":    (None, 0),
             "_xfConfirm":   (None, 1),
             "_xfToken":     (None, hiddenToken)
@@ -85,7 +85,7 @@ class add:
         
         # Handle function return.
         if post.status_code == 303:
-            print(f"Entry successfully created for MilpacID: {milpacID}")
+            print(f"Entry successfully created for MilpacID: {milpacID} | Code: {post.status_code}")
             return True
         else:
             print(f"Entry not submitted. HTTP Error {post.status_code}")
@@ -129,6 +129,6 @@ if __name__ == "__main__":
         items = list(csv.reader(file))
 
     for i in items:
+        # print(i)
         assert (len(i) == 4) # Check for proper input length.
-        instance = add()
-        instance.serviceRecord(i[0], i[1], i[2], i[3])
+        add().serviceRecord(int(i[0]), int(i[1]), str(i[2]), str(i[3]))

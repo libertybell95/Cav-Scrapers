@@ -2,9 +2,12 @@
 
 # Scraper for milpacs data
 
-import re
-import requests
 import csv
+import json
+import re
+
+import requests
+
 
 class roster:
     '''
@@ -27,7 +30,7 @@ class roster:
 
         return re.findall(r"profile\?uniqueid=(\d*)", self.html)
             
-    def getInfo(self, rosterID=False, removeSpecialCharacters=False):
+    def getInfo(self, rosterID=False, removeSpecialCharacters=False, shaveRank=False):
         '''
         Get various info from milpacs roster.
 
@@ -36,6 +39,8 @@ class roster:
                 If False, will use ID specified when class was initiated.
             removeSpecialCharacters (bool) [OPTIONAL]: Remove any special characters from troopers names, specifically aprostrophies.
                 Default: False.
+            shaveRanks (bool) [OPTIONAL]: Remove the rank from their name.
+                Default: False
 
         Output (list): List of information on each trooper. Each index contains the following, in order:
             0 (int): Milpac ID
@@ -56,11 +61,19 @@ class roster:
                 name = m[4].replace('&#039;','')
             else:
                 name = m[4].replace('&#039;','\'')
+        
+        # Handle rank shaving. Also rank image URL.
+        if shaveRank == True:
+            stripper = stripRank(name, m[1])
+            name = stripper["name"]
+            rank = stripper["rank"]
+        else:
+            rank = m[1] # Rank image URL
 
             output.append([
                 m[3], # Milpac ID
-                m[1], # Rank picture URL
-                name, # Rank w/ Full Name
+                rank, # Rank picture URL
+                name, # Full Name
                 m[7], # Enlisted Date
                 m[9], # Promotion Date
                 m[11], # Position
@@ -117,8 +130,6 @@ class trooper:
         Inputs:
             removeSpecialCharacters (bool) [OPTIONAL]: Remove any special characters from troopers names, specifically aprostrophies.
                 Default: False
-            shaveRanks (bool) [OPTIONAL]: Remove the rank from their name. TODO: Implement
-                Default: False
 
         Output (dict): Trooper information with the following keys:
             name (str): Full name. (Ex: John Doe)
@@ -174,3 +185,23 @@ class trooper:
             2 (str): Award Details
         '''
         return re.findall(r'awardDate..(.*)<.*\n.*awardTitle..(.*)<.*\n.*\n.*awardDetails..(.*)<', self.html)
+
+def stripRank(name, rankImage):
+    '''
+    Strip rank from trooper's name. Requires 'ranks.json' to be present in same folder as this script.
+
+    Inputs:
+        name (str): Trooper's full name w/ rank.
+        rankImage (str): Image for trooper's rank.
+
+    Output (dict): Troopers name and rank. Dict structure:
+        name (str): Trooper's full name. (Ex: John Doe)
+        rank (str): Full spelling of rank (Ex: Specialist)
+    '''
+    with open("ranks.json") as file:
+        rConfig = json.load(file)
+
+    for c in rConfig:
+        if c["milpacImage"] == rankImage:
+            l = len(c["long"])
+            return {"name":name[l+1:], "rank":c["long"]}

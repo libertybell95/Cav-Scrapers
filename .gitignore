@@ -1,6 +1,7 @@
 # Sensitive Files
 credentials.json
 Network Logs/
+/*.jpeg
 
 # Useless Junk
 __pycache__/

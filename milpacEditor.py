@@ -3,6 +3,7 @@
 # Tools for editing milpac information.
 
 import json
+import csv
 import os
 import re
 
@@ -46,7 +47,7 @@ class add:
     
     def serviceRecord(self, milpacID, roster, text, date, citationFile=False):
         '''
-        Create a service record entry.
+        Create a service record entry. TODO: Add citation file support
 
         Inputs:
             milpacID (int): Milpac ID of trooper.
@@ -54,8 +55,8 @@ class add:
             text (str): Service record entry.
             date (str): Date of service record. Format is yyyy-mm-dd (Example: 7 February 2020 would be 2020-02-07).
             citationFile (str) [OPTIONAL]: Path to citation file, if needed. (CITATION FILE CURRENTLY NOT SUPPORTED)
-        
-        TODO: Add citation file support
+
+        Output (bool): Returns True if record created successfully, False if unsuccessful.
         '''
         assert (len(date) == 10) # Check for date to be formatted correctly.
         assert (type(milpacID) != 'int') # Check for proper Milpac ID.
@@ -79,9 +80,16 @@ class add:
             "_xfToken":     (None, hiddenToken)
         }
 
+        # Create service record entry.
         post = self.s.post("https://7cav.us/rosters/service-record/save", files=formData, allow_redirects=False)
-        print(post.status_code)
-        print("Service record entry created.")
+        
+        # Handle function return.
+        if post.status_code == 303:
+            print(f"Entry successfully created for MilpacID: {milpacID}")
+            return True
+        else:
+            print(f"Entry not submitted. HTTP Error {post.status_code}")
+            return False
 
     def award(self, milpacID, roster, award, date, citationFile, details=False):
         '''
@@ -114,4 +122,12 @@ class add:
 
 
 if __name__ == "__main__":
-    add().serviceRecord(2519,1,"The bot is testing - 1", "2020-01-10")
+    print("This functionality only supports adding bulk service records. If this is not your intention press CTRL+C now.")
+    path = input("Enter absolute path to .csv file: ")
+
+    with open(path) as file:
+        items = list(csv.reader(file))
+
+    for i in items:
+        assert (len(i) == 4) # Check for proper input length.
+        add().serviceRecord(i[0], i[1], i[2], i[3])

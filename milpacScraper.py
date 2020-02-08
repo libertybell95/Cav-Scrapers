@@ -110,22 +110,24 @@ class trooper:
         
         self.html = requests.get(f"https://7cav.us/rosters/profile?uniqueid={ID}").text
 
-    def information(self, removeSpecialCharacters=False):
+    def information(self, removeSpecialCharacters=False, shaveRanks=False):
         '''
         Get data listed in 'Information' block of the milpac roster.
 
         Inputs:
             removeSpecialCharacters (bool) [OPTIONAL]: Remove any special characters from troopers names, specifically aprostrophies.
-                Default: False.
+                Default: False
+            shaveRanks (bool) [OPTIONAL]: Remove the rank from their name. TODO: Implement
+                Default: False
 
         Output (dict): Trooper information with the following keys:
-            name (str): Full name (Ex: John Doe)
-            primary (str): Primary position (Ex: Reservist IC)
+            name (str): Full name. (Ex: John Doe)
+            primary (str): Primary position. (Ex: Reservist IC)
             secondary (list|bool): Secondary position, value is 'False' bool if none found.
-            enlisted (str): Date of enlsitment (Ex: Jan 20, 2018)
-            promoted (str): Date of last promotion (Ex: Nov 11, 2019)
-            rank (str): Full spelling of rank (Ex: First Lieutenant)
-            forumID (int): Forum account ID
+            enlisted (str): Date of enlsitment. (Ex: Jan 20, 2018)
+            promoted (str): Date of last promotion. (Ex: Nov 11, 2019)
+            rank (str): Full spelling of rank. (Ex: First Lieutenant)
+            forumID (int): Forum account ID.
 
         '''
         # Handle secondaries, if present.

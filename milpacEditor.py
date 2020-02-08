@@ -8,7 +8,6 @@ import re
 
 import requests
 
-
 '''
 Structure
     class add():

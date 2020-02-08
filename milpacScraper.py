@@ -70,6 +70,7 @@ class roster:
         else:
             rank = m[1] # Rank image URL
 
+        for m in match:
             output.append([
                 m[3], # Milpac ID
                 rank, # Rank picture URL

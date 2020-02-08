@@ -10,8 +10,6 @@ __pycache__/
 *.html
 *.csv
 *.json
-main.py
-test.py
 
 # Do not ignore ghettopacks
 !ghettopacks.csv

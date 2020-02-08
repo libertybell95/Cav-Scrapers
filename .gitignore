@@ -9,6 +9,7 @@ __pycache__/
 .vscode/
 *.html
 *.csv
+*.json
 main.py
 test.py
 

@@ -131,4 +131,5 @@ if __name__ == "__main__":
     for i in items:
         # print(i)
         assert (len(i) == 4) # Check for proper input length.
-        add().serviceRecord(int(i[0]), int(i[1]), str(i[2]), str(i[3]))
+        instance = add()
+        instance.serviceRecord(int(i[0]), int(i[1]), str(i[2]), str(i[3]))

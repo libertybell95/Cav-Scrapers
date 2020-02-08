@@ -91,6 +91,13 @@ class add:
             print(f"Entry not submitted. HTTP Error {post.status_code}")
             return False
 
+        def __repr__():
+            print(f"serviceRecord(self, milpacID={milpacID}, roster={roster}, text={text}, date={date}, citationFile={citationFile})")
+
+        def __str__():
+            print("Service Record Entry Data:")
+            print(formData)
+
     def award(self, milpacID, roster, award, date, citationFile, details=False):
         '''
         Create award entry.

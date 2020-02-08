@@ -123,9 +123,9 @@ class add:
 
 if __name__ == "__main__":
     print("This functionality only supports adding bulk service records. If this is not your intention press CTRL+C now.")
-    path = input("Enter absolute path to .csv file: ")
+    # path = input("Enter absolute path to .csv file: ")
 
-    with open(path) as file:
+    with open("operation.csv") as file:
         items = list(csv.reader(file))
 
     for i in items:

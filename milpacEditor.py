@@ -73,7 +73,7 @@ class add:
             "details_html": (None, f"<p>{text}</p>"),
             "record_date":  (None, date),
             "citation":     (None),
-            "roster_id":    (None, 1),
+            "roster_id":    (None, roster),
             "relation_id":  (None, milpacID),
             "record_id":    (None, 0),
             "_xfConfirm":   (None, 1),

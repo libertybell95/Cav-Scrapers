@@ -77,7 +77,7 @@ class add:
         
         # Handle function return.
         if post.status_code == 303:
-            print(f"Entry successfully created for MilpacID: {milpacID} | Code: {post.status_code}")
+            print(f"Service Record entry created for: https://7cav.us/rosters/profile?uniqueid={milpacID}")
             return True
         else:
             print(f"Entry not submitted. HTTP Error {post.status_code}")
@@ -104,7 +104,6 @@ class add:
             if award == a[1]: # If the award is an award choice.
                 awardChecker = True # Set award checker to true.
                 awardID = int(a[0])
-                print(f"The award is: {a[1]}. The ID is: {a[0]}")
                 break # Break for loop.
         if awardChecker == False:
             assert False,"Award not found."
@@ -127,7 +126,7 @@ class add:
 
         # Handle function return.
         if post.status_code == 303:
-            print(f"Award successfully created for MilpacID: {milpacID} | Code: {post.status_code}")
+            print(f"Award created for: https://7cav.us/rosters/profile?uniqueid={milpacID} ({award})")
             return True
         else:
             print(f"Award not submitted. HTTP Error {post.status_code}")
@@ -155,7 +154,7 @@ class add:
 
         # Handle function return.
         if post.status_code == 303:
-            print(f"Uniform successfully created for MilpacID: {milpacID} | Code: {post.status_code}")
+            print(f"Uniform uploaded for: https://7cav.us/rosters/profile?uniqueid={milpacID}")
             return True
         else:
             print(f"Uniform not submitted. HTTP Error {post.status_code}")
@@ -240,16 +239,19 @@ class bulkAdd:
             self.s.uniform(u[0], u[1], u[2])
 
 if __name__ == "__main__":
-    choice = int(input("What type of bulk addition would you like to execute:\n1 - Service Records\n2 - Awards\n3 - Uniforms\n Enter a number: "))
+    choice = int(input("What type of bulk addition would you like to execute:\n1 - Service Records\n2 - Awards\n3 - Uniforms\nEnter a number: "))
 
     if choice == 1:
         print("You chose Service Records.")
         path = input("Enter full path to .csv file. The file not the folder:\n")
+        bulkAdd().serviceRecords(path)
     elif choice == 2:
         print("You chose Awards.")
         path = input("Enter full path to .csv file. The file not the folder:\n")
+        bulkAdd().awards(path)
     elif choice == 3:
         print("You chose Uniforms")
         path = input("Enter full path to .csv file. The file not the folder:\n")
+        bulkAdd().uniforms(path)
     else:
         print("That is not a choice")

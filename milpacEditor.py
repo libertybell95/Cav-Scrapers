@@ -173,16 +173,6 @@ class add:
             print(f"Uniform not submitted. HTTP Error {post.status_code}")
             return False
 
-    def dumpAwardIDs(self):
-        '''
-        Gets milpacs Award IDs and outputs them to a JSON file.
-        '''
-        HTML = self.s.get("https://7cav.us/rosters/combat-roster.1/awards/add?uniqueid=446").text
-        regex = re.findall(r'option value="(\d+).*?>(.*?)<', HTML)
-
-        with open("awards.json", "w") as file:
-            json.dump(regex, file, indent=4)
-
     def __del__(self):
         self.s.close()
 

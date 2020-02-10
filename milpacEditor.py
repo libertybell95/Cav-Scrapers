@@ -188,14 +188,14 @@ class add:
 
 
 if __name__ == "__main__":
-    # print("This functionality only supports adding bulk service records. If this is not your intention press CTRL+C now.")
-    # path = input("Enter absolute path to .csv file: ")
+    print("This functionality only supports adding bulk service records. If this is not your intention press CTRL+C now.")
+    path = input("Enter absolute path to .csv file: ")
 
-    # with open(path) as file:
-    #     items = list(csv.reader(file))
+    with open(path) as file:
+        items = list(csv.reader(file))
 
-    # for i in items:
-    #     # print(i)
-    #     assert (len(i) == 4) # Check for proper input length.
-    #     instance = add()
-    #     instance.serviceRecord(int(i[0]), int(i[1]), str(i[2]), str(i[3]))
+    for i in items:
+        # print(i)
+        assert (len(i) == 4) # Check for proper input length.
+        instance = add()
+        instance.serviceRecord(int(i[0]), int(i[1]), str(i[2]), str(i[3]))

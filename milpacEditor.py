@@ -59,8 +59,6 @@ class add:
         Output (bool): Returns True if record created successfully, False if unsuccessful.
         '''
         assert (len(date) == 10) # Check for date to be formatted correctly.
-        assert (type(milpacID) != 'int') # Check for proper Milpac ID.
-        assert (type(roster) != 'int') # Check for proper roster ID.
 
         # Get, and set hidden token.
         hiddenToken = re.findall(
@@ -68,13 +66,19 @@ class add:
             self.s.get(f"https://7cav.us/rosters/combat-roster.{roster}/service-record/add?uniqueid={milpacID}").text
         )[0]
 
+        # Handle citation file
+        if citationFile == False:
+            citationTuple = (None)
+        else:
+            citationTuple = (citationFile.split('/')[-1], open(citationFile, "rb"))
+
         # Multipart form data
         formData = {
             "details_html": (None, f"<p>{text}</p>"),
             "record_date":  (None, date),
-            "citation":     (None),
-            "roster_id":    (None, roster),
-            "relation_id":  (None, milpacID),
+            "citation":     citationTuple,
+            "roster_id":    (None, int(roster)),
+            "relation_id":  (None, int(milpacID)),
             "record_id":    (None, 0),
             "_xfConfirm":   (None, 1),
             "_xfToken":     (None, hiddenToken)
@@ -91,14 +95,7 @@ class add:
             print(f"Entry not submitted. HTTP Error {post.status_code}")
             return False
 
-        def __repr__():
-            print(f"serviceRecord(self, milpacID={milpacID}, roster={roster}, text={text}, date={date}, citationFile={citationFile})")
-
-        def __str__():
-            print("Service Record Entry Data:")
-            print(formData)
-
-    def award(self, milpacID, roster, award, date, citationFile, details=False):
+    def award(self, milpacID, roster, award, date, citationFile=False, details=False):
         '''
         Create award entry.
 
@@ -110,7 +107,43 @@ class add:
             citationFile (str): Path to citation file.
             details (str) [OPTIONAL]: Details text, if needed.
         '''
-        pass
+        assert (len(date) == 10) # Check for date to be formatted correctly.
+
+        awardForm = self.s.get(f"https://7cav.us/rosters/combat-roster.{roster}/awards/add?uniqueid={milpacID}").text
+        
+        awardChecker = False
+        for a in re.findall(r'option value="(\d+).*?>(.*?)<', awardForm): # For each possible award choice.
+            if award == a[1]: # If the award is an award choice.
+                awardChecker = True # Set award checker to true.
+                awardID = int(a[0])
+                print(f"The award is: {a[1]}. The ID is: {a[0]}")
+                break # Break for loop.
+        if awardChecker == False:
+            assert False,"Award not found."
+
+        # Multipart form data
+        formData = {
+            "award_id":     (None, awardID),
+            "details_html": (None, f"<p>{details}</p>" if details != False else None),
+            "award_date":   (None, date),
+            "citation":     (None) if citationFile == False else (citationFile.split('/')[-1], open(citationFile, "rb")),
+            "roster_id":    (None, int(roster)),
+            "relation_id":  (None, int(milpacID)),
+            "record_id":    (None, 0),
+            "_xfConfirm":   (None, 1),
+            "_xfToken":     (None, re.findall(r'_xfToken.*value..(.*)\"',awardForm)[0])
+        }
+
+        # Create service record entry.
+        post = self.s.post("https://7cav.us/rosters/awards/save", files=formData, allow_redirects=False)
+
+        # Handle function return.
+        if post.status_code == 303:
+            print(f"Award successfully created for MilpacID: {milpacID} | Code: {post.status_code}")
+            return True
+        else:
+            print(f"Award not submitted. HTTP Error {post.status_code}")
+            return False
 
     def uniform(self, milpacID, roster, uniformfile, deleteCurrent=True):
         '''
@@ -121,22 +154,48 @@ class add:
             uniformFile (str): Path to uniform file.
             deleteCurrent (bool) [OPTIONAL]: Delete trooper's old uniform.
         '''
-        
-        pass
+
+        formData = {
+            "uniform": (uniformfile.split('/')[-1], open(uniformfile, "rb")),
+            "delete": (None, 1 if deleteCurrent == True else 0),
+            "_xfConfirm": (None, 1),
+            "_xfToken": (None, re.findall(r'_xfToken.*value..(.*)\"',self.s.get(f"https://7cav.us/rosters/uniform?uniqueid={milpacID}").text)[0])
+        }
+
+        # Create service record entry.
+        post = self.s.post(f"https://7cav.us/rosters/uniform?uniqueid={milpacID}", files=formData, allow_redirects=False)
+
+        # Handle function return.
+        if post.status_code == 303:
+            print(f"Uniform successfully created for MilpacID: {milpacID} | Code: {post.status_code}")
+            return True
+        else:
+            print(f"Uniform not submitted. HTTP Error {post.status_code}")
+            return False
+
+    def dumpAwardIDs(self):
+        '''
+        Gets milpacs Award IDs and outputs them to a JSON file.
+        '''
+        HTML = self.s.get("https://7cav.us/rosters/combat-roster.1/awards/add?uniqueid=446").text
+        regex = re.findall(r'option value="(\d+).*?>(.*?)<', HTML)
+
+        with open("awards.json", "w") as file:
+            json.dump(regex, file, indent=4)
 
     def __del__(self):
         self.s.close()
 
 
 if __name__ == "__main__":
-    print("This functionality only supports adding bulk service records. If this is not your intention press CTRL+C now.")
-    path = input("Enter absolute path to .csv file: ")
+    # print("This functionality only supports adding bulk service records. If this is not your intention press CTRL+C now.")
+    # path = input("Enter absolute path to .csv file: ")
 
-    with open(path) as file:
-        items = list(csv.reader(file))
+    # with open(path) as file:
+    #     items = list(csv.reader(file))
 
-    for i in items:
-        # print(i)
-        assert (len(i) == 4) # Check for proper input length.
-        instance = add()
-        instance.serviceRecord(int(i[0]), int(i[1]), str(i[2]), str(i[3]))
+    # for i in items:
+    #     # print(i)
+    #     assert (len(i) == 4) # Check for proper input length.
+    #     instance = add()
+    #     instance.serviceRecord(int(i[0]), int(i[1]), str(i[2]), str(i[3]))

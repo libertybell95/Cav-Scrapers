@@ -10,6 +10,8 @@ __pycache__/
 *.html
 *.csv
 *.json
+docs/
+.DS_Store
 
 # Do not ignore ghettopacks
 !ghettopacks.csv

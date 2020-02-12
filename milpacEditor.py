@@ -19,12 +19,19 @@ class add:
             credentialJSON (str) [OPTIONAL]: Location of credentials.json file if not in current working directory. TODO: Implement.
         
         TODO: Add feature that changes current working directory to location of this .py file for credentails.json
-          loading. Then change it back to current working directory at time of file execution.
+            loading. Then change it back to current working directory at time of file execution.
+        TODO: Add try/catch statement that checks for the existence of the credentials.json file.
         '''
         self.s = requests.Session() # Requests session.
 
-        with open("credentials.json") as file: # External credentials file.
-            c = json.load(file)
+        try:
+            with open("credentials.json") as file: # External credentials file.
+                c = json.load(file)
+        except IOError: # File cannot be opened.
+            assert False, f"credentials.json file not found in {os.getcwd()}"
+        except ValueError: # File cannot be parsed.
+            assert False, "Error with formatting of credentials.json file."
+        
 
         auth = {
             "login": c["user"],

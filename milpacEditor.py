@@ -17,6 +17,9 @@ class add:
 
         Inputs:
             credentialJSON (str) [OPTIONAL]: Location of credentials.json file if not in current working directory. TODO: Implement.
+        
+        TODO: Add feature that changes current working directory to location of this .py file for credentails.json
+          loading. Then change it back to current working directory at time of file execution.
         '''
         self.s = requests.Session() # Requests session.
 

@@ -3,6 +3,7 @@ credentials.json
 Network Logs/
 /*.jpeg
 apiKey.txt
+*.log
 
 # Useless Junk
 __pycache__/

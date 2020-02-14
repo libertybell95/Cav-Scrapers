@@ -56,7 +56,7 @@ class add:
 
         Output (bool): Returns True if record created successfully, False if unsuccessful.
         '''
-        assert (len(date) == 10) # Check for date to be formatted correctly.
+        assert (len(date) == 10), f"Actual Length: {len(date)}\nValue: {date}" # Check for date to be formatted correctly.
 
         # Get, and set hidden token.
         hiddenToken = re.findall(
@@ -105,7 +105,7 @@ class add:
             citationFile (str): Path to citation file.
             details (str) [OPTIONAL]: Details text, if needed.
         '''
-        assert (len(date) == 10) # Check for date to be formatted correctly.
+        assert (len(date) == 10), f"Actual Length: {len(date)}\nValue: {date}" # Check for date to be formatted correctly.
 
         awardForm = self.s.get(f"https://7cav.us/rosters/combat-roster.{roster}/awards/add?uniqueid={milpacID}").text
         

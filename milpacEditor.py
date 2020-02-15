@@ -77,7 +77,7 @@ class add:
         
         # Handle function return.
         if post.status_code == 303:
-            print(f"Service Record entry created for: https://7cav.us/rosters/profile?uniqueid={milpacID}")
+            print(f"Service Record entry created for: https://7cav.us/rosters/profile?uniqueid={milpacID} ({date})")
             return True
         else:
             print(f"Entry not submitted. HTTP Error {post.status_code}")
@@ -126,7 +126,7 @@ class add:
 
         # Handle function return.
         if post.status_code == 303:
-            print(f"Award created for: https://7cav.us/rosters/profile?uniqueid={milpacID} ({award})")
+            print(f"Award created for: https://7cav.us/rosters/profile?uniqueid={milpacID} ({award} | {date})")
             return True
         else:
             print(f"Award not submitted. HTTP Error {post.status_code}")
@@ -205,6 +205,7 @@ class bulkAdd:
             2 (str): Award name, as it appears in Milpacs. Case sensitive.
             3 (str): Service record entry date. Must be following Format: yyyy-mm-dd (Ex: "2020-01-19").
             4 (str): Path to citation file. Not the folder, the actual file.
+                If not using a citation, put an empty string.
             5 (str) [OPTIONAL]: Award details.
         '''
 
@@ -213,10 +214,11 @@ class bulkAdd:
 
         for a in awards:
             assert (len(a) in (5,6)), f"Entry is wrong length, needs to be 5 or 6. Current length: {len(a)}. Row contents:\n{a}"
+            citation = False if bool(a[4]) == False else a[4]
             if len(a) == 5: # If award details not given.
-                self.s.award(a[0], a[1], a[2], a[3], a[4])
+                self.s.award(a[0], a[1], a[2], a[3], citation)
             else: # if award details is given.
-                self.s.award(a[0], a[1], a[2], a[3], a[4], a[5])
+                self.s.award(a[0], a[1], a[2], a[3], citation, a[5])
     
     def uniforms(self, csvFile):
         '''
@@ -243,15 +245,15 @@ if __name__ == "__main__":
 
     if choice == 1:
         print("You chose Service Records.")
-        path = input("Enter full path to .csv file. The file not the folder:\n")
+        path = input("Enter full path to .csv file: ")
         bulkAdd().serviceRecords(path)
     elif choice == 2:
         print("You chose Awards.")
-        path = input("Enter full path to .csv file. The file not the folder:\n")
+        path = input("Enter full path to .csv file: ")
         bulkAdd().awards(path)
     elif choice == 3:
         print("You chose Uniforms")
-        path = input("Enter full path to .csv file. The file not the folder:\n")
+        path = input("Enter full path to .csv file: ")
         bulkAdd().uniforms(path)
     else:
         print("That is not a choice")

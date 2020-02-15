@@ -67,5 +67,35 @@ def checkEIBCIBRoster(rosterID):
     
     return results
 
+def ordinalIndicator(num):
+    '''
+    Get the ordinal indictor for a number
+
+    Inputs:
+        num (int): Number to process
+
+    Output: Dictionary with the following key value pairs:
+        stringNum (str): Number with ordinal indicator appended (Ex: 1st)
+        indicator (str): Ordinal indicator used (Ex: for 1 the value would be "st")
+    '''
+    rawNum = str(num)
+    strNum = rawNum if len(rawNum) == 1 else (0+rawNum)
+
+    if strNum[-2:] in ("11", "12", "13", "14", "15", "16", "17", "18", "19"): # If in teens
+        indicator = "th"
+    elif strNum[-1] is "1": # Ends with 1
+        indicator = "st"
+    elif strNum[-1] is "2": # Ends with 2
+        indicator = "nd"
+    elif strNum[-1] is "3": # Ends with 3
+        indicator = "rd"
+    else: # Everything else
+        indicator = "th"
+
+    return {
+        "stringNum": f"rawNum{indicator}",
+        "indicator": indicator
+    }
+
 if __name__ == "__main__":
     checkEIBCIBRoster(1)

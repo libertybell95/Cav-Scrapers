@@ -16,19 +16,23 @@ class add:
         If doing bulk processing, use the same class instance for all additions.
 
         Inputs:
-            credentialJSON (str) [OPTIONAL]: Location of credentials.json file if not in current working directory. TODO: Implement.
+            credentialJSON (str) [OPTIONAL]: Location of credentials.json file if not in current working directory.
         '''
         self.s = requests.Session() # Requests session.
 
         try:
-            initDir = os.getcwd() # Get current working directory at file execution.
-            dname = os.path.dirname(os.path.abspath(__file__))
-            os.chdir(dname) # Change current working directory to this file's location
-            with open("credentials.json") as file: # External credentials file.
-                c = json.load(file)
-            os.chdir(initDir) # Change working directory back to initDir.
+            if credentialsJSON == False:
+                initDir = os.getcwd() # Get current working directory at file execution.
+                dname = os.path.dirname(os.path.abspath(__file__))
+                os.chdir(dname) # Change current working directory to this file's location
+                with open("credentials.json") as file: # External credentials file.
+                    c = json.load(file)
+                os.chdir(initDir) # Change working directory back to initDir.
+            else:
+                with open(credentialsJSON) as file:
+                    c = json.load(file)
         except IOError: # File cannot be opened.
-            assert False, f"credentials.json file not found in {os.getcwd()}"
+            assert False, f"credentials.json file not found in {credentialsJSON or os.getcwd()}"
         except ValueError: # File cannot be parsed.
             assert False, "Error with formatting of credentials.json file."
         
@@ -99,7 +103,7 @@ class add:
 
         Inputs:
             milpacID (int): Milpac ID of trooper.
-            roster (int): Roster number trooper is in (Check URL. Combat Roster is 1)
+            roster (int): Roster number trooper is in (Check URL. Combat Roster is 1).
             award (str): Full name of award, as it appears on a trooper's milpacs.
             date (str): Date of service record. Format is yyyy-mm-dd (Example: "2020-02-19").
             citationFile (str): Path to citation file.

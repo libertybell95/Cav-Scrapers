@@ -3,6 +3,7 @@ credentials.json
 Network Logs/
 /*.jpeg
 apiKey.txt
+*.log
 
 # Useless Junk
 __pycache__/
@@ -10,6 +11,8 @@ __pycache__/
 *.html
 *.csv
 *.json
+docs/
+.DS_Store
 
 # Do not ignore ghettopacks
 !ghettopacks.csv

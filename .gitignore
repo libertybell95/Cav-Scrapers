@@ -7,7 +7,7 @@ apiKey.txt
 
 # Useless Junk
 __pycache__/
-.vscode/
+/.vscode/
 *.html
 *.csv
 *.json

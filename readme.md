@@ -21,7 +21,6 @@ The format for the row listing is: `\<index number>` (`\<variable type>`): `\<de
 #### Bulk Service Records
 
 **Each row must contain the following:**
-
 > 0 (int): Trooper's Milpac ID.
 > 1 (int): Trooper's roster ID.
 > 2 (str): Service record entry text.
@@ -31,7 +30,6 @@ The format for the row listing is: `\<index number>` (`\<variable type>`): `\<de
 #### Bulk Awards
 
 **Each row must contain the following:**
-
 > 0 (int): Trooper's Milpac ID.
 > 1 (int): Trooper's roster ID.
 > 2 (str): Award name, as it appears in Milpacs. Case sensitive.
@@ -42,7 +40,6 @@ The format for the row listing is: `\<index number>` (`\<variable type>`): `\<de
 #### Bulk Uniform Upload
 
 **Each row must contain the following**
-
 > 0 (int): Trooper's Milpac ID.
 > 1 (int): Trooper's roster ID.
 > 2 (str): Path to uniform file. The file, not the folder.

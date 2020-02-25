@@ -16,7 +16,7 @@ This file is used to:
 
 Currently, if the file is executed directly it will give you instructions for doing a bulk processing of any of the options listed above. To perform a bulk processing you need to have a .csv file with the correct items in each row. The requirements for each type of bulk processing are listed below.
 
-The format for the row listing is: `\<index number>` (`\<variable type>`): `\<description>`
+The format for the row listing is: `<index number>` (`<variable type>`): `<description>`
 
 #### Bulk Service Records
 

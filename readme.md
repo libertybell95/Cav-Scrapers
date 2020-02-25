@@ -29,7 +29,7 @@ Each row must contain the following:
 >
 > 3 (str): Service record entry date. Must be following Format: yyyy-mm-dd (Ex: "2020-01-19")
 >
-> 4 (str) [OPTIONAL]: Path to citation file. Not the folder, the actual file.``
+> 4 (str) [OPTIONAL]: Path to citation file. Not the folder, the actual file.
 
 #### Bulk Awards
 

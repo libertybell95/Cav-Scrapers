@@ -22,38 +22,27 @@ The format for the row listing is: `\<index number>` (`\<variable type>`): `\<de
 
 **Each row must contain the following:**
 
-0 (int): Trooper's Milpac ID.
-
-1 (int): Trooper's roster ID.
-
-2 (str): Service record entry text.
-
-3 (str): Service record entry date. Must be following Format: yyyy-mm-dd (Ex: "2020-01-19")
-
-4 (str) [OPTIONAL]: Path to citation file. Not the folder, the actual file.``
+> 0 (int): Trooper's Milpac ID.
+> 1 (int): Trooper's roster ID.
+> 2 (str): Service record entry text.
+> 3 (str): Service record entry date. Must be following Format: yyyy-mm-dd (Ex: "2020-01-19")
+> 4 (str) [OPTIONAL]: Path to citation file. Not the folder, the actual file.``
 
 #### Bulk Awards
 
 **Each row must contain the following:**
 
-0 (int): Trooper's Milpac ID.
-
-1 (int): Trooper's roster ID.
-
-2 (str): Award name, as it appears in Milpacs. Case sensitive.
-
-3 (str): Service record entry date. Must be following Format: yyyy-mm-dd (Ex: "2020-01-19").
-
-4 (str): Path to citation file. Not the folder, the actual file. If not using a citation, put an empty string.
-
-5 (str) [OPTIONAL]: Award details.
+> 0 (int): Trooper's Milpac ID.
+> 1 (int): Trooper's roster ID.
+> 2 (str): Award name, as it appears in Milpacs. Case sensitive.
+> 3 (str): Service record entry date. Must be following Format: yyyy-mm-dd (Ex: "2020-01-19").
+> 4 (str): Path to citation file. Not the folder, the actual file. If not using a citation, put an empty string.
+> 5 (str) [OPTIONAL]: Award details.
 
 #### Bulk Uniform Upload
 
 **Each row must contain the following**
 
-0 (int): Trooper's Milpac ID.
-
-1 (int): Trooper's roster ID.
-
-2 (str): Path to uniform file. The file, not the folder.
+> 0 (int): Trooper's Milpac ID.
+> 1 (int): Trooper's roster ID.
+> 2 (str): Path to uniform file. The file, not the folder.

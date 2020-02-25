@@ -146,6 +146,10 @@ class add:
             print(f"Award not submitted. HTTP Error {post.status_code}")
             return False
     
+    def getAwards(self):
+        awardForm = self.s.get(f"https://7cav.us/rosters/4/awards/add?uniqueid=371").text
+        return re.findall(r'option value="(\d+).*?>(.*?)<', awardForm)
+
     def uniform(self, milpacID, roster, uniformfile, deleteCurrent=True):
         '''
         Upload a new uniform.

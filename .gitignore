@@ -13,6 +13,7 @@ __pycache__/
 *.json
 docs/
 .DS_Store
+*.txt
 
 # Do not ignore ghettopacks
 !ghettopacks.csv

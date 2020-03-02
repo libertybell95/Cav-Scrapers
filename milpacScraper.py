@@ -5,6 +5,7 @@
 import csv
 import json
 import re
+import datetime
 
 import requests
 
@@ -124,20 +125,24 @@ class trooper:
         
         self.html = requests.get(f"https://7cav.us/rosters/profile?uniqueid={ID}").text
 
-    def information(self, removeSpecialCharacters=False, shaveRanks=False):
+    def information(self, removeSpecialCharacters=False, shaveRanks=False, dateTime=False):
         '''
         Get data listed in 'Information' block of the milpac roster.
 
         Inputs:
             removeSpecialCharacters (bool) [OPTIONAL]: Remove any special characters from troopers names, specifically aprostrophies.
                 Default: False
+            shaveRank (bool): TODO: Figure out why this is here, and remove if not nessecary.
+            dateTime (bool) [OPTIONAL]:
+                If True, convert enlisted & promoted to datetime object.
+                If False [DEFAULT], enlisted & promoted are date string (Ex, Nov 11, 2020).
 
         Output (dict): Trooper information with the following keys:
             name (str): Full name. (Ex: John Doe)
             primary (str): Primary position. (Ex: Reservist IC)
-            secondary (list|bool): Secondary position, value is 'False' bool if none found.
-            enlisted (str): Date of enlsitment. (Ex: Jan 20, 2018)
-            promoted (str): Date of last promotion. (Ex: Nov 11, 2019)
+            secondary (list|bool): Secondary position, Value is 'False' bool if none found.
+            enlisted (str|date): Date of enlsitment. See dateTime input for further help.
+            promoted (str|date): Date of last promotion. See dateTime input for further help.
             rank (str): Full spelling of rank. (Ex: First Lieutenant)
             forumID (int): Forum account ID.
 
@@ -156,36 +161,59 @@ class trooper:
         else:
             name = name.replace('&#039;','\'')
 
+        enlisted = re.findall(r'Enlisted.*\n\t*.*?>(.*)<', self.html)[0]
+        promoted = re.findall(r'Promotion.*\n\t*.*?>(.*)<', self.html)[0]
+
         return {
             "name": name,
             "primary": re.findall(r'Primary Position.*\n\t*.*?>(.*)<', self.html)[0],
             "secondary": secondaries,
-            "enlisted": re.findall(r'Enlisted.*\n\t*.*?>(.*)<', self.html)[0],
-            "promoted": re.findall(r'Promotion.*\n\t*.*?>(.*)<', self.html)[0],
+            "enlisted": enlisted if dateTime == False else datetime.datetime.strptime(enlisted, "%b %d, %Y").date(),
+            "promoted": promoted if dateTime == False else datetime.datetime.strptime(promoted, "%b %d, %Y").date(),
             "rank": re.findall(r'Rank.*\n\t*.*?>(.*)<', self.html)[0],
             "forumID": int(re.findall(r'Forum Account.{6}\n\t{1,}.*\.(\d{1,})', self.html)[0])
         }
 
-    def serviceRecord(self):
+    def serviceRecord(self, dateTime=False):
         '''
         Get all service record entries.
 
-        Output (list): List containing service record entries. Each index is a list with the following:
-            0 (str): Entry Date (Ex: Nov 11, 2019)
+        Inputs:
+            dateTime (bool) [OPTIONAL]:
+                If True, will Entry Date on output will be a dateTime object.
+                If False (DEFAULT), Entry Date on output will be string (Ex: Nov 11, 2019)
+
+        Output (list): List containing service record entries. Each index is a tuple with the following:
+            0 (str|date): Entry Date. See dateTime input for further help.
             1 (str): Record Entry
         '''
-        return re.findall(r'recordDate..(.*)<.*\n\t*.*recordDetails..(.*)<', self.html)
+        reg = re.findall(r'recordDate..(.*)<.*\n\t*.*recordDetails..(.*)<', self.html)
 
-    def awards(self):
+        if dateTime != False:
+            return [(datetime.datetime.strptime(i[0], "%b %d, %Y").date(), i[1]) for i in reg]
+        else:
+            return reg
+
+    def awards(self, dateTime=False):
         '''
         Get all awards.
 
-        Output (list): List contatining record entries. Each index is a list with the following:
-            0 (str): Entry Date (Ex: Feb 23, 2015)
+        Inputs:
+            dateTime (bool) [OPTIONAL]:
+                If True, will Entry Date on output will be a dateTime object.
+                If False (DEFAULT), Entry Date on output will be string (Ex: Nov 11, 2019)
+
+        Output (list): List contatining record entries. Each index is a tuple with the following:
+            0 (str|date): Entry Date. see dateTime input for further help.
             1 (str): Award Name (Ex: "Purple Heart")
             2 (str): Award Details
         '''
-        return re.findall(r'awardDate..(.*)<.*\n.*awardTitle..(.*)<.*\n.*\n.*awardDetails..(.*)<', self.html)
+        reg = re.findall(r'awardDate..(.*)<.*\n.*awardTitle..(.*)<.*\n.*\n.*awardDetails..(.*)<', self.html)
+
+        if dateTime != False:
+            return [(datetime.datetime.strptime(i[0], "%b %d, %Y").date(), i[1], i[2]) for i in reg]
+        else:
+            return reg
 
 def stripRank(name, rankImage):
     '''

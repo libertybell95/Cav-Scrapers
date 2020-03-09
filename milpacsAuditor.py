@@ -250,6 +250,9 @@ class NCOA():
         for m in milpacIDs:
             output[m] = self.checkGraduating(m)
 
+        with open("NCOACheck.json", "w") as file:
+            json.dump(output, file, indent=4)
+
         return output
 
     def pushCSV(self, rosterID):

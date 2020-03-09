@@ -268,6 +268,9 @@ class NCOA():
             wr = csv.writer(file, quoting=csv.QUOTE_ALL)
             wr.writerows(troopers)
 
+        print("Saved NCOA check to NCOACheck.csv")
+        print("Order of values are: Old NCOA, Phase I, Phase II")
+
 def ordinalIndicator(num):
     '''
     Get the ordinal indictor for a number

@@ -45,7 +45,7 @@ class roster:
 
         Output (list): List of information on each trooper. Each index contains the following, in order:
             0 (int): Milpac ID
-            1 (str): Rank picture URL
+            1 (str): Rank picture URL or Rank
             2 (str): Rank w/ Full Name
             3 (str): Enlisted Date
             4 (str): Promotion Date

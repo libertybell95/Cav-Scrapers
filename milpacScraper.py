@@ -63,15 +63,14 @@ class roster:
             else:
                 name = m[4].replace('&#039;','\'')
         
-        # Handle rank shaving. Also rank image URL.
-        if shaveRank == True:
-            stripper = stripRank(name, m[1])
-            name = stripper["name"]
-            rank = stripper["rank"]
-        else:
-            rank = m[1] # Rank image URL
+            # Handle rank shaving. Also rank image URL.
+            if shaveRank == True:
+                stripper = stripRank(name, m[1])
+                name = stripper["name"]
+                rank = stripper["rank"]
+            else:
+                rank = m[1] # Rank image URL
 
-        for m in match:
             output.append([
                 m[3], # Milpac ID
                 rank, # Rank picture URL
@@ -188,6 +187,8 @@ class trooper:
             1 (str): Record Entry
         '''
         reg = re.findall(r'recordDate..(.*)<.*\n\t*.*recordDetails..(.*)<', self.html)
+        if reg[0][0] == "width=\"10%\">Date":
+            del reg[0]
 
         if dateTime != False:
             return [(datetime.datetime.strptime(i[0], "%b %d, %Y").date(), i[1]) for i in reg]

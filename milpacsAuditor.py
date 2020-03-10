@@ -305,4 +305,4 @@ def ordinalIndicator(num):
     }
 
 if __name__ == "__main__":
-    NCOA().pushCSV(1)
+    pass

@@ -18,3 +18,8 @@ docs/
 # Do not ignore ghettopacks
 !ghettopacks.csv
 !ghettopacks_clean.csv
+
+# virtualenv
+bin/
+lib/
+pyvenv.cfg

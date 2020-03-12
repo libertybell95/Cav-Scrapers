@@ -183,6 +183,7 @@ class forum:
         return output
 
 class conversations:
+    # TODO: Document class methods
     def __init__(self, credentialsJSON=False):
         self.s = requests.Session()  # Requests session.
 
@@ -341,4 +342,4 @@ class conversations:
             "_xfToken": hiddenToken
         }
 
-        p = self.s.post(f"https://7cav.us/conversations/{ID}/leave", data=payload)
+        self.s.post(f"https://7cav.us/conversations/{ID}/leave", data=payload)

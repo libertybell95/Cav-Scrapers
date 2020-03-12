@@ -232,8 +232,3 @@ class conversations:
     def reply(self, ID, body):
         # Reply to a conversation.
         pass
-
-
-if __name__ == "__main__":
-    with open("postTest.json", "w") as file:
-        json.dump(forum().posts(60821, pages=-2), file, indent=4)

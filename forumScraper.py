@@ -290,7 +290,8 @@ class conversations:
                 output += messageList(HTML)[::-1]
                 print(f"Parsed page {p}")
 
-    def start(self, members, title, body, allowInvite=True, lockConvo=False, stickyConvo=False):
+    def start(self, members, title, body, allowInvite=True, lockConvo=False, stickyConvo=False, leave=False):
+        # TODO: Add convo leave functionality.
         # Start a conversation.
 
         # Handle convo attirbutes
@@ -327,5 +328,20 @@ class conversations:
 
         self.s.post(f"https://7cav.us/conversations/{ID}/insert-reply", data=payload)
 
+    def leave(self, ID, ignoreMessages=False):
+        # Leave a conversation
+        hiddenToken = re.findall(
+            r'_xfToken.*value..(.*)\"', 
+            self.s.get(f"https://7cav.us/conversations/{ID}/leave").text
+        )[0]
+
+        payload = {
+            "delete_type": "delete_ignore" if ignoreMessages == True else "delete",
+            "_xfConfirm": 1,
+            "_xfToken": hiddenToken
+        }
+
+        p = self.s.post(f"https://7cav.us/conversations/{ID}/leave", data=payload)
+
 if __name__ == "__main__":
-    conversations().reply(73698, "Hello, is anybody there?")
+    conversations().leave(73702, ignoreMessages=True)

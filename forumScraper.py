@@ -342,6 +342,3 @@ class conversations:
         }
 
         p = self.s.post(f"https://7cav.us/conversations/{ID}/leave", data=payload)
-
-if __name__ == "__main__":
-    conversations().leave(73702, ignoreMessages=True)

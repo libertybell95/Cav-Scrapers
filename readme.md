@@ -1,3 +1,13 @@
+# Installation
+
+To install dependencies type the following into your terminal from this directory:
+
+```
+pip install -r requirements.txt
+```
+
+If using MacOS or Linux type *pip3* instead of *pip* in the command
+
 # Overview
 
 The Cav Scrapers repo is a collection of tools for the manipulation of data on the 7Cav.us forums and it's Milpacs system.

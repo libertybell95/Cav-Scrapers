@@ -290,13 +290,42 @@ class conversations:
                 output += messageList(HTML)[::-1]
                 print(f"Parsed page {p}")
 
-    def start(self, members, title, body):
+    def start(self, members, title, body, allowInvite=True, lockConvo=False, stickyConvo=False):
         # Start a conversation.
-        pass
+
+        # Handle convo attirbutes
+        allowInvite = 0 if allowInvite == False else 1 # Allow anyone in convo to invite others.
+        lockConvo = 0 if lockConvo == False else 1 # Lock conversation.
+        stickyConvo = 0 if stickyConvo == False else 1 # Sticky conversation.
+        
+        # Get, and set hidden token.
+        hiddenToken = re.findall(
+            r'_xfToken.*value..(.*)\"',
+            self.s.get(f"https://7cav.us/conversations/add").text
+        )[0]
+
+        payload = {
+            "recipients": members,
+            "title": title,
+            "message_html": f"<p>{body}</p>",
+            "_xfToken": hiddenToken
+        }
+
+        self.s.post("https://7cav.us/conversations/insert", data=payload)
 
     def reply(self, ID, body):
         # Reply to a conversation.
-        pass
+        hiddenToken = re.findall(
+            r'_xfToken.*value..(.*)\"', 
+            self.s.get(f"https://7cav.us/conversations/{ID}/").text
+        )[0]
+
+        payload = {
+            "message_html": f"<p>{body}</p>",
+            "_xfToken": hiddenToken
+        }
+
+        self.s.post(f"https://7cav.us/conversations/{ID}/insert-reply", data=payload)
 
 if __name__ == "__main__":
-    conversations().parse(70331)
+    conversations().reply(73698, "Hello, is anybody there?")

@@ -19,6 +19,9 @@ docs/
 !ghettopacks.csv
 !ghettopacks_clean.csv
 
+# Do not ignore pip requirements.
+!requirements.txt
+
 # virtualenv
 bin/
 lib/

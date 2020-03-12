@@ -9,6 +9,34 @@ import re
 import milpacScraper
 
 
+class NCORibbon:
+    def checkTrooper(self, milpacID):
+        # Checks to make sure the trooper has the proper NCO ribbons they qualify for.
+        NCORanks = [
+            ["Sergeant"             ,"E-5"],
+            ["Staff Sergeant"       ,"E-6"],
+            ["Sergeant First Class" ,"E-7"],
+            ["Master Sergeant"      ,"E-8"],
+            ["First Sergeant"       ,"E-8"],
+            ["Sergeant Major"       ,"E-9"],
+            ["Command Sergeant"     ,"E-9"]
+        ]
+        
+        paygrades = map(lambda x: x[1], NCORanks)
+        fullRanks = map(lambda x: x[0], NCORanks)
+
+        # scraper = milpacScraper.trooper(milpacID)
+        # NCOAwards = [i for i in scraper.awards() if i[1] == "NCO Professional Development Ribbon"]
+        # promoRecords = [i[1] for i in scraper.serviceRecord()]
+
+        pass
+
+    def checkRoster(self, rosterID):
+        pass
+
+    def pushCSV(self, rosterID):
+        pass
+
 class EIBCIB:
     def checkTrooper(self, ID, checkEligible=False):
         '''
@@ -134,7 +162,7 @@ class GCM:
     def checkRoster(self, rosterID=1):
         pass
 
-class rankHistory():
+class rankHistory:
     '''
     Give a history of the trooper's rank, from boot camp to current day.
     '''
@@ -208,9 +236,17 @@ class rankHistory():
 
         return promos
 
-class NCOA():
+class NCOA:
     def checkGraduating(self, milpacID):
-        # Check for Milpac entry of "Graduated NCOA Warrior Leadership Course" then check if it's the old system, phase 1, or phase 2.
+        '''
+        Check if an individual trooper has graduated NCOA. Checks for:
+            -Old NCOA
+            -NCOA Phase I
+            -NCOA Phase II
+
+        Inputs:
+            milpacID (int): Trooper's milpac ID.
+        '''
         serviceRecord = milpacScraper.trooper(milpacID).serviceRecord()
 
         p2, p1, old = False, False, False
@@ -243,6 +279,15 @@ class NCOA():
         }
 
     def checkRoster(self, rosterID):
+        '''
+        Checks all troopers in a roster for NCOA graduation with self.checkGraduating().
+            returns dict with all of the audit report. Also saves audit report to a JSON file.
+
+        Inputs:
+            rosterID (int): ID number of roster to check.
+        '''
+
+
         # Check an entire roster for NCOA completion.
         milpacIDs = [i[0] for i in milpacScraper.roster(rosterID).getInfo()]    
 
@@ -256,6 +301,19 @@ class NCOA():
         return output
 
     def pushCSV(self, rosterID):
+        '''
+        Pushes result of self.checkRoster() to a .csv file for importing into a spreadsheet.
+            Each row in the .csv file contains the following:
+                0: milpacID
+                1: Rank
+                2: Name
+                3: Check for Old NCOA
+                4: Check for NCOA Phase I
+                5: Check for NCOA Phase II
+
+        Inputs:
+            rosterID (int): ID number of roster to check.
+        '''
         j = self.checkRoster(rosterID)
 
         troopers = [[i[0], i[1], i[2]] for i in milpacScraper.roster(rosterID).getInfo(shaveRank=True)]

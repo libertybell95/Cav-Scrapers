@@ -4,7 +4,6 @@ import json
 import os
 import re
 import html
-import unicodedata
 
 import requests
 from bs4 import BeautifulSoup
@@ -161,9 +160,7 @@ class forum:
                 HTML = self.s.get(f"https://7cav.us/threads/{threadID}/page-{p}").text
                 output += postList(HTML)
                 print(f"Parsed page {p}")
-        elif pages == 1:  # If getting only 1 page
-            output = postList(self.s.get(f"https://7cav.us/threads/{threadID}/").text)
-        elif pages > 1:  # If getting more then 1 page
+        elif pages > 0:  # If getting more then 1 page
             if pages > totalPages:
                 print(
                     f"There aren't this many pages in the forum. Actual total: {totalPages}\nExiting.")
@@ -176,10 +173,7 @@ class forum:
                     HTML = self.s.get(f"https://7cav.us/threads/{threadID}/page-{p}").text
                     output += postList(HTML)
                     print(f"Parsed page {p}")
-        elif pages == -1:
-            print(f"Parsing page {totalPages}")
-            output = postList(self.s.get(f"https://7cav.us/threads/{threadID}/page-{totalPages}").text)[::-1]
-        elif pages < -1:
+        elif pages < 0:
             print(f"Parsing last {abs(pages)} pages.")
             for p in range(1, totalPages+1)[::-1][:pages]:
                 HTML = self.s.get(f"https://7cav.us/threads/{threadID}/page-{p}").text
@@ -222,13 +216,87 @@ class conversations:
                     data=auth, allow_redirects=False)
 
     def parse(self, ID, pages=1):
-        # Get info on all messages in a conversation.
-        pass
+        '''
+        Gets list of messages in a conversation.
 
-    def start(self, ID, members, title, body):
+        Inputs:
+            ID (int): ID number of conversation to parse.
+            pages (int): What pages to parse.
+                If value is 0, will parse all available pages.
+                If value > 0, will parse all pages up to that value.
+                If value < 0, will parse __ last pages. Ex: -2 gets last 2 pages on conversation.
+                    Also orders messages from newest to oldest.
+
+        Output: List with each index being a post (dict) with the following info:
+            ID (str): ID number of message.
+            Author (str): Author of message (forum username).
+            RawContent (str): Raw message content, with HTML tags.
+            Content (str): Message content, HTML tags removed.
+            MilpacIDs (list): List of all milpac IDs found in the message content.
+        '''
+
+        HTML = self.s.get(f"https://7cav.us/conversations/{ID}/").text
+        
+        try:
+            totalPages = int(re.findall(r"Page \d+ of (\d+)", HTML)[0])
+        except:
+            totalPages = 1
+
+        
+        # Get info on all messages in a conversation.
+        def messageList(HTML):
+            soup = BeautifulSoup(HTML, features="lxml")
+            rawPosts = soup.find_all("li", class_="message")
+
+            posts = []
+            for p in rawPosts:
+                info = re.findall(r"data-author=\"(.*?)\" id=\"message-(\d+)\"", HTML)[0]
+                posts.append({
+                    "ID": info[1],
+                    "Author": info[0],
+                    "Content": p.text.replace("\n\n", "\n").replace("\t", ""),
+                    "RawContent": str(p),
+                    "MilpacIDs": [re.findall(r"uniqueid=(\d+)", i.get("href"))[0] for i in p.find_all("a") if "uniqueid" in i.get("href")]
+                })
+
+            return rawPosts[0]
+
+        output = []
+        if pages == 0:  # Get all pages
+            print(f"Parsing {totalPages} pages.")
+            output += messageList(HTML)
+            print("Parsed page 1")
+            for p in range(2, totalPages+1):
+                HTML = self.s.get(f"https://7cav.us/conversations/{ID}/page-{p}").text
+                output += messageList(HTML)
+                print(f"Parsed page {p}")
+        elif pages > 0:  # If getting more then 1 page
+            if pages > totalPages:
+                print(
+                    f"There aren't this many pages in the forum. Actual total: {totalPages}\nExiting.")
+                return None
+            else:
+                print(f"Parsing {pages} pages.")
+                output += messageList(HTML)
+                print("Parsed page 1")
+                for p in range(2, pages+1):
+                    HTML = self.s.get(f"https://7cav.us/conversations/{ID}/page-{p}").text
+                    output += messageList(HTML)
+                    print(f"Parsed page {p}")
+        elif pages < 0:
+            print(f"Parsing last {abs(pages)} pages.")
+            for p in range(1, totalPages+1)[::-1][:pages]:
+                HTML = self.s.get(f"https://7cav.us/conversations/{ID}/page-{p}").text
+                output += messageList(HTML)[::-1]
+                print(f"Parsed page {p}")
+
+    def start(self, members, title, body):
         # Start a conversation.
         pass
 
     def reply(self, ID, body):
         # Reply to a conversation.
         pass
+
+if __name__ == "__main__":
+    conversations().parse(70331)

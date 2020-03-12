@@ -292,8 +292,28 @@ class conversations:
                 print(f"Parsed page {p}")
 
     def start(self, members, title, body, allowInvite=True, lockConvo=False, stickyConvo=False, leave=False):
-        # TODO: Add convo leave functionality.
-        # Start a conversation.
+        '''
+        Start a new conversation.
+
+        Inputs:
+            members (list): List of conversation members forum names, besides yourself.
+            title (str): Title of conversation.
+            body (str): First message of conversation, in HTML.
+            allowInvite (bool) [OPTIONAL]: Allow others to invite people to conversation.
+                If True [DEFAULT]: Allows others to be invited.
+                If False: Does not allow others to be invited.
+            lockConvo (bool) [OPTIONAL]: Lock conversation
+                If True: Locks conversation.
+                If False [DEFAULT]: Does NOT lock conversation.
+            stickyConvo (bool) [OPTIONAL]: Sticky conversation.
+                If True: Stickies conversation in your convo queue.
+                If False [DEFAULT]: Does NOT sticky convo in your queue.
+            leave (bool) [OPTIONAL]: Leave conversation on start. TODO: Implement.
+                If True: Leaves conversation, accepts further replies.
+                If False [DEFAULT]: Does not leave conversation.
+
+        Output (str): Response code of conversation start. Code 200 is normal.
+        '''
 
         # Handle convo attirbutes
         allowInvite = 0 if allowInvite == False else 1 # Allow anyone in convo to invite others.
@@ -307,15 +327,25 @@ class conversations:
         )[0]
 
         payload = {
-            "recipients": members,
+            "recipients": ", ".join(members),
             "title": title,
             "message_html": f"<p>{body}</p>",
             "_xfToken": hiddenToken
         }
 
-        self.s.post("https://7cav.us/conversations/insert", data=payload)
+        return self.s.post("https://7cav.us/conversations/insert", data=payload).reason
 
     def reply(self, ID, body):
+        '''
+        Reply to a conversation.
+
+        Inputs:
+            ID (int): Conversation ID.
+            body (str): Message to reply with.
+
+        Output (str): Response code to convo response. 200 is normal.
+        '''
+
         # Reply to a conversation.
         hiddenToken = re.findall(
             r'_xfToken.*value..(.*)\"', 
@@ -327,9 +357,21 @@ class conversations:
             "_xfToken": hiddenToken
         }
 
-        self.s.post(f"https://7cav.us/conversations/{ID}/insert-reply", data=payload)
+        return self.s.post(f"https://7cav.us/conversations/{ID}/insert-reply", data=payload).reason
 
     def leave(self, ID, ignoreMessages=False):
+        '''
+        Leave a conversation.
+
+        Inputs:
+            ID (int): ID of conversation.
+            ignoreMessages (bool): Whether to ignore further messages in conversation.
+                If True: Ignores all further messages.
+                If False [DEFAULT]: Does NOT ignore further messages.
+
+        Output (str): Response code of conversation leave request. Normal is 303.
+        '''
+
         # Leave a conversation
         hiddenToken = re.findall(
             r'_xfToken.*value..(.*)\"', 
@@ -342,4 +384,4 @@ class conversations:
             "_xfToken": hiddenToken
         }
 
-        self.s.post(f"https://7cav.us/conversations/{ID}/leave", data=payload)
+        return self.s.post(f"https://7cav.us/conversations/{ID}/leave", data=payload).reason

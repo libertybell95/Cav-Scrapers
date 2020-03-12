@@ -116,6 +116,8 @@ class forum:
             pages (int): What pages to parse.
                 If value is 0, will parse all available pages.
                 If value > 0, will parse all pages up to that value.
+                If value < 0, will parse __ last pages. Ex: -2 gets last 2 pages on thread.
+                    Also orders posts from newest to oldest.
 
         Output: List with each index being a post (dict) with the following info:
             ID (str): ID number of post.
@@ -124,7 +126,7 @@ class forum:
             Content (str): Post content, HTML tags removed.
             MilpacIDs (list): List of all milpac IDs found in the post content.
         '''
-        
+
         HTML = self.s.get(f"https://7cav.us/threads/{threadID}/").text
         try:
             totalPages = int(re.findall(r"Page \d+ of (\d+)", HTML)[0])
@@ -152,23 +154,37 @@ class forum:
 
         output = []
         if pages == 0:  # Get all pages
-            print(f"Parsing {totalPages} pages")
-            for p in range(1, totalPages+1):
+            print(f"Parsing {totalPages} pages.")
+            output += postList(HTML)
+            print("Parsed page 1")
+            for p in range(2, totalPages+1):
                 HTML = self.s.get(f"https://7cav.us/threads/{threadID}/page-{p}").text
                 output += postList(HTML)
                 print(f"Parsed page {p}")
         elif pages == 1:  # If getting only 1 page
             output = postList(self.s.get(f"https://7cav.us/threads/{threadID}/").text)
-        else:  # If getting more then 1 page
+        elif pages > 1:  # If getting more then 1 page
             if pages > totalPages:
                 print(
                     f"There aren't this many pages in the forum. Actual total: {totalPages}\nExiting.")
                 return None
             else:
-                for p in range(1, pages+1):
+                print(f"Parsing {pages} pages.")
+                output += postList(HTML)
+                print("Parsed page 1")
+                for p in range(2, pages+1):
                     HTML = self.s.get(f"https://7cav.us/threads/{threadID}/page-{p}").text
                     output += postList(HTML)
                     print(f"Parsed page {p}")
+        elif pages == -1:
+            print(f"Parsing page {totalPages}")
+            output = postList(self.s.get(f"https://7cav.us/threads/{threadID}/page-{totalPages}").text)[::-1]
+        elif pages < -1:
+            print(f"Parsing last {abs(pages)} pages.")
+            for p in range(1, totalPages+1)[::-1][:pages]:
+                HTML = self.s.get(f"https://7cav.us/threads/{threadID}/page-{p}").text
+                output += postList(HTML)[::-1]
+                print(f"Parsed page {p}")
 
         return output
 
@@ -220,4 +236,4 @@ class conversations:
 
 if __name__ == "__main__":
     with open("postTest.json", "w") as file:
-        json.dump(forum().posts(61133, pages=1), file, indent=4)
+        json.dump(forum().posts(60821, pages=-2), file, indent=4)

@@ -143,6 +143,7 @@ class trooper:
             enlisted (str|date): Date of enlsitment. See dateTime input for further help.
             promoted (str|date): Date of last promotion. See dateTime input for further help.
             rank (str): Full spelling of rank. (Ex: First Lieutenant)
+            forumName (str): Forum account name. (Ex: Doe.J)
             forumID (int): Forum account ID.
 
         '''
@@ -170,6 +171,7 @@ class trooper:
             "enlisted": enlisted if dateTime == False else datetime.datetime.strptime(enlisted, "%b %d, %Y").date(),
             "promoted": promoted if dateTime == False else datetime.datetime.strptime(promoted, "%b %d, %Y").date(),
             "rank": re.findall(r'Rank.*\n\t*.*?>(.*)<', self.html)[0],
+            "forumName": re.findall(r'Forum Account.{6}\n\t{1,}.*?">(.*?)<', self.html)[0],
             "forumID": int(re.findall(r'Forum Account.{6}\n\t{1,}.*\.(\d{1,})', self.html)[0])
         }
 
